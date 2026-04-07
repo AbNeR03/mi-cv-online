@@ -1,424 +1,205 @@
-// Toggle tema oscuro/claro
-const themeToggle = document.getElementById('themeToggle');
-const themeIcon = themeToggle.querySelector('i');
+// ==========================================
+// SCRIPT PRINCIPAL UNIFICADO Y LIMPIO
+// ==========================================
 
-themeToggle.addEventListener('click', () => {
-    const isDark = document.body.getAttribute('data-theme') === 'dark';
-    
-    if (isDark) {
-        document.body.removeAttribute('data-theme');
-        themeIcon.className = 'fas fa-moon';
-        localStorage.setItem('theme', 'light');
+document.addEventListener('DOMContentLoaded', () => {
+    'use strict';
+
+    // ==========================================
+    // 1. TEMA DINÁMICO (MODO OSCURO/CLARO)
+    // ==========================================
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = themeToggle ? themeToggle.querySelector('i') : null;
+
+    // Animación suave del giro del ícono
+    const animateIconChange = (isDark) => {
+        if (!themeIcon) return;
+        themeIcon.style.transform = 'rotate(-90deg) scale(0)';
+        themeIcon.style.opacity = '0';
+        setTimeout(() => {
+            themeIcon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+            themeIcon.style.transform = 'rotate(0deg) scale(1)';
+            themeIcon.style.opacity = '1';
+        }, 150);
+    };
+
+    // Cargar preferencia guardada
+    if (localStorage.getItem('theme') === 'dark') {
+        document.body.setAttribute('data-theme', 'dark');
+        if(themeIcon) themeIcon.className = 'fas fa-sun';
     } else {
-        document.body.setAttribute('data-theme', 'dark');
-        themeIcon.className = 'fas fa-sun';
-        localStorage.setItem('theme', 'dark');
+        if(themeIcon) themeIcon.className = 'fas fa-moon';
     }
-});
 
-// Cargar tema guardado
-document.addEventListener('DOMContentLoaded', () => {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
-        document.body.setAttribute('data-theme', 'dark');
-        themeIcon.className = 'fas fa-sun';
+    // Escuchar clic en el botón
+    if (themeToggle && themeIcon) {
+        themeToggle.addEventListener('click', () => {
+            const isDark = document.body.getAttribute('data-theme') === 'dark';
+            if (isDark) {
+                document.body.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+                animateIconChange(false);
+            } else {
+                document.body.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+                animateIconChange(true);
+            }
+        });
     }
-});
 
-// Smooth scroll para navegación
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
-    });
-});
-
-// Animación de aparición al hacer scroll
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-};
-
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('fade-in');
-        }
-    });
-}, observerOptions);
-
-// Observar elementos para animación
-document.addEventListener('DOMContentLoaded', () => {
-    const elementsToAnimate = document.querySelectorAll('.skill-category, .project-card, .about-text, .contact-item');
-    elementsToAnimate.forEach(el => observer.observe(el));
-});
-
-// Efecto de escritura en el título
-function typeWriter(element, text, speed = 100) {
-    let i = 0;
-    element.innerHTML = '';
+    // ==========================================
+    // 2. NAVEGACIÓN Y ANIMACIONES FRONTEND
+    // ==========================================
     
-    function type() {
-        if (i < text.length) {
-            element.innerHTML += text.charAt(i);
-            i++;
-            setTimeout(type, speed);
-        }
-    }
-    type();
-}
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+    });
 
-// Iniciar efecto de escritura cuando la página cargue
-window.addEventListener('load', () => {
+    // Efecto TypeWriter (Máquina de escribir)
     const heroTitle = document.querySelector('.hero-title');
     if (heroTitle) {
         const text = heroTitle.textContent;
-        typeWriter(heroTitle, text, 80);
+        heroTitle.innerHTML = '';
+        let i = 0;
+        function type() {
+            if (i < text.length) {
+                heroTitle.innerHTML += text.charAt(i);
+                i++;
+                setTimeout(type, 80);
+            }
+        }
+        setTimeout(type, 300); // Pequeño retraso al iniciar
     }
-});
 
-// Efectos adicionales para la foto de perfil
-document.addEventListener('DOMContentLoaded', function() {
-    const profileContainer = document.querySelector('.profile-img-container');
-    const profilePhoto = document.querySelector('.profile-photo');
-    
-    // Efecto de carga suave para la imagen
-    if (profilePhoto) {
-        profilePhoto.addEventListener('load', function() {
-            this.style.opacity = '1';
+    // Fade-in al hacer scroll
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) entry.target.classList.add('fade-in');
         });
-        
-        // Precarga con opacidad 0
-        profilePhoto.style.opacity = '0';
-        profilePhoto.style.transition = 'opacity 0.5s ease';
-    }
-    
-    // Efecto de click para la foto
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    document.querySelectorAll('.skill-category, .project-card, .about-text, .contact-item').forEach(el => observer.observe(el));
+
+    // Efecto clic en la Foto de Perfil
+    const profileContainer = document.querySelector('.profile-img-container');
     if (profileContainer) {
         profileContainer.addEventListener('click', function() {
             this.style.transform = 'scale(0.95)';
-            setTimeout(() => {
-                this.style.transform = 'scale(1.08)';
-            }, 150);
+            setTimeout(() => this.style.transform = 'scale(1.08)', 150);
         });
     }
-});
-// Función para descargar PDF
-function setupPdfDownload() {
+
+    // ==========================================
+    // 3. TOASTS Y DESCARGA DE PDF ESTÁTICO
+    // ==========================================
+    window.showToast = function(msg, type) {
+        const existingToasts = document.querySelectorAll('.pdf-toast');
+        existingToasts.forEach(t => t.remove());
+
+        const t = document.createElement('div');
+        t.className = 'pdf-toast';
+        t.textContent = msg;
+        t.style.cssText = `position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:${type==='error'?'#FF6B6B':'#00B4B3'}; color:white; padding:12px 24px; border-radius:8px; z-index:10000; font-weight:bold; font-family:sans-serif; box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: opacity 0.5s ease; opacity: 1;`;
+        document.body.appendChild(t);
+        
+        setTimeout(() => {
+            t.style.opacity = '0';
+            setTimeout(() => t.remove(), 500);
+        }, 2500);
+    };
+
     const downloadBtn = document.getElementById('downloadPdf');
-    
     if (downloadBtn) {
-        downloadBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            // Crear un enlace temporal para descargar
-            const link = document.createElement('a');
-            link.href = 'assets/docs/cv-abner-navez.pdf'; // Ruta de tu PDF
-            link.download = 'CV-Abner-Navez.pdf';
-            link.target = '_blank';
-            
-            // Simular click
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            
-            // Opcional: Mostrar mensaje de confirmación
-            showDownloadMessage();
+        downloadBtn.addEventListener('click', () => {
+            window.showToast('📄 Abriendo Currículum...', 'success');
         });
     }
-}
 
-// Mensaje de confirmación
-function showDownloadMessage() {
-    const message = document.createElement('div');
-    message.textContent = '✅ Descargando CV...';
-    message.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background: #00B4B3;
-        color: white;
-        padding: 15px 20px;
-        border-radius: 5px;
-        z-index: 10000;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        font-weight: 500;
-    `;
-    
-    document.body.appendChild(message);
-    
-    setTimeout(() => {
-        document.body.removeChild(message);
-    }, 3000);
-}
-
-// Llamar la función cuando cargue la página
-document.addEventListener('DOMContentLoaded', function() {
-    setupPdfDownload();
+    // ==========================================
+    // 4. INICIALIZAR MODALES Y GRÁFICAS
+    // ==========================================
+    new ProjectModals();
+    new MetricsDashboard();
 });
 
+// ==========================================
+// CLASES GLOBALES
+// ==========================================
 class ProjectModals {
     constructor() {
-        this.modals = {};
-        this.init();
-    }
-    
-    init() {
-        this.setupModalTriggers();
-        this.setupSkillsModals(); // <- NUEVA FUNCIÓN AGREGADA
+        this.setupSkillsModals();
         this.setupModalEvents();
+        this.setupImageGallery();
     }
     
-    setupModalTriggers() {
-        // Agrega botones de "Ver más" a las tarjetas de proyectos
-        const projectCards = document.querySelectorAll('.project-card');
-        
-        projectCards.forEach((card) => {
-            // Identificar el proyecto por su título
-            const projectTitle = card.querySelector('h3').textContent.toLowerCase();
-            
-            let modalId = '';
-            
-            // Asignar modal según el título del proyecto
-            if (projectTitle.includes('sindi')) {
-                modalId = 'modal-sindi';
-            } else if (projectTitle.includes('análisis') || projectTitle.includes('riesgo') || projectTitle.includes('académico')) {
-                modalId = 'modal-analisis';
-            } else if (projectTitle.includes('robot') || projectTitle.includes('competitivo')) {
-                modalId = 'modal-robots';
-            }
-            
-            if (modalId) {
-                // Crear botón de ver más
-                const viewMoreBtn = document.createElement('button');
-                viewMoreBtn.className = 'view-more-btn';
-                viewMoreBtn.innerHTML = '<i class="fas fa-expand"></i> Ver Detalles';
-                viewMoreBtn.style.cssText = `
-                    background: var(--primary);
-                    color: white;
-                    border: none;
-                    padding: 8px 16px;
-                    border-radius: 5px;
-                    cursor: pointer;
-                    font-size: 0.9rem;
-                    transition: all 0.3s ease;
-                    margin-top: 1rem;
-                    display: inline-flex;
-                    align-items: center;
-                    gap: 0.5rem;
-                `;
-                
-                viewMoreBtn.addEventListener('mouseenter', function() {
-                    this.style.background = 'var(--primary-dark)';
-                    this.style.transform = 'translateY(-2px)';
-                });
-                
-                viewMoreBtn.addEventListener('mouseleave', function() {
-                    this.style.background = 'var(--primary)';
-                    this.style.transform = 'translateY(0)';
-                });
-                
-                viewMoreBtn.addEventListener('click', () => {
-                    this.openModal(modalId);
-                });
-                
-                card.appendChild(viewMoreBtn);
-            }
-        });
-    }
-
-    // ===== NUEVAS FUNCIONES PARA HABILIDADES TÉCNICAS =====
     setupSkillsModals() {
-        // Agrega interactividad a las categorías de habilidades
-        const skillCategories = document.querySelectorAll('.skill-category');
-        
-        skillCategories.forEach((category) => {
-            // Hacer toda la categoría clickeable
+        document.querySelectorAll('.skill-category').forEach((category) => {
             category.style.cursor = 'pointer';
             category.style.transition = 'all 0.3s ease';
-            
             category.addEventListener('mouseenter', function() {
                 this.style.transform = 'translateY(-5px)';
                 this.style.boxShadow = '0 10px 30px rgba(0, 180, 179, 0.2)';
             });
-            
             category.addEventListener('mouseleave', function() {
                 this.style.transform = 'translateY(0)';
                 this.style.boxShadow = 'var(--shadow)';
             });
-            
-            // Asignar modal según la categoría
-            const categoryTitle = category.querySelector('h3').textContent.toLowerCase();
-            let modalId = '';
-            
-            if (categoryTitle.includes('backend') || categoryTitle.includes('desarrollo')) {
-                modalId = 'modal-backend';
-            } else if (categoryTitle.includes('análisis') || categoryTitle.includes('datos')) {
-                modalId = 'modal-datos';
-            } else if (categoryTitle.includes('herramientas')) {
-                modalId = 'modal-herramientas';
-            }
-            
-            if (modalId) {
-                category.addEventListener('click', (e) => {
-                    // Evitar abrir modal si se hace click en una barra de habilidad
-                    if (!e.target.classList.contains('skill-bar') && 
-                        !e.target.classList.contains('skill-progress')) {
-                        this.openModal(modalId);
-                    }
-                });
-                
-                // Agregar indicador visual de que es clickeable
-                const title = category.querySelector('h3');
-                title.innerHTML += ' <i class="fas fa-expand-alt" style="font-size: 0.8em; opacity: 0.7; margin-left: 0.5rem;"></i>';
-            }
-        });
-        
-        // También hacer las barras de habilidades individuales clickeables
-        this.setupSkillBars();
-    }
-
-    setupSkillBars() {
-        // Hacer cada skill item clickeable para mostrar más detalles
-        document.querySelectorAll('.skill-item').forEach((item) => {
-            const skillName = item.querySelector('span').textContent.toLowerCase();
-            
-            item.style.cursor = 'pointer';
-            item.addEventListener('click', () => {
-                this.showSkillDetail(skillName);
-            });
         });
     }
-
-    showSkillDetail(skillName) {
-        // Mensaje temporal - puedes expandir esta función
-        const messages = {
-            'laravel': 'Framework PHP para desarrollo web elegante y moderno',
-            'bases de datos': 'Diseño, implementación y optimización de bases de datos relacionales',
-            'xampp': 'Entorno de desarrollo local para aplicaciones web',
-            'análisis exploratorio': 'Proceso de investigar datasets para resumir sus características principales',
-            'clasificación de datos': 'Técnicas para categorizar y organizar información',
-            'microsoft office': 'Suite ofimática con dominio avanzado en Excel y PowerPoint',
-            'arduino/amd vivand': 'Programación de microcontroladores para proyectos de robótica',
-            'inglés avanzado': 'Comprensión y comunicación técnica en inglés'
-        };
-        
-        const message = messages[skillName] || `Detalles sobre ${skillName}`;
-        
-        this.showToast(message, 'info');
-    }
-
-    showToast(message, type = 'info') {
-        const toast = document.createElement('div');
-        toast.textContent = message;
-        toast.style.cssText = `
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: ${type === 'info' ? 'var(--primary)' : '#FF6B6B'};
-            color: white;
-            padding: 12px 24px;
-            border-radius: 25px;
-            z-index: 1000;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            font-weight: 500;
-            animation: slideUp 0.3s ease;
-        `;
-        
-        document.body.appendChild(toast);
-        
-        setTimeout(() => {
-            if (document.body.contains(toast)) {
-                toast.style.animation = 'slideDown 0.3s ease';
-                setTimeout(() => {
-                    if (document.body.contains(toast)) {
-                        document.body.removeChild(toast);
-                    }
-                }, 300);
-            }
-        }, 3000);
-    }
-    // ===== FIN DE NUEVAS FUNCIONES =====
 
     setupModalEvents() {
-        // Cerrar modal con X
-        document.querySelectorAll('.modal-close').forEach(closeBtn => {
-            closeBtn.addEventListener('click', (e) => {
-                this.closeModal(e.target.closest('.modal'));
-            });
+        document.querySelectorAll('.modal-close').forEach(btn => {
+            btn.addEventListener('click', (e) => this.closeModal(e.target.closest('.modal')));
         });
-        
-        // Cerrar modal haciendo click fuera
         document.querySelectorAll('.modal').forEach(modal => {
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    this.closeModal(modal);
-                }
-            });
+            modal.addEventListener('click', (e) => { if (e.target === modal) this.closeModal(modal); });
         });
-        
-        // Cerrar con ESC
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                this.closeAllModals();
-            }
-        });
-        
-        // Galería de imágenes - lightbox
-        this.setupImageGallery();
-    }
-    
-    openModal(modalId) {
-        const modal = document.getElementById(modalId);
-        if (modal) {
-            modal.style.display = 'block';
-            document.body.style.overflow = 'hidden'; // Previene scroll
-            modal.classList.add('active');
-        }
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') this.closeAllModals(); });
     }
     
     closeModal(modal) {
         if (modal) {
             modal.style.display = 'none';
-            document.body.style.overflow = ''; // Restaura scroll
             modal.classList.remove('active');
+            modal.classList.remove('show');
         }
     }
     
     closeAllModals() {
-        document.querySelectorAll('.modal').forEach(modal => {
-            this.closeModal(modal);
-        });
+        document.querySelectorAll('.modal').forEach(modal => this.closeModal(modal));
     }
-    
+    // ==========================================
+    // NUEVAS FUNCIONES DE GALERÍA (LIGHTBOX)
+    // ==========================================
     setupImageGallery() {
-        // Lightbox para imágenes de la galería
+        // Busca todas las imágenes dentro de las galerías de los modales
         document.querySelectorAll('.modal-gallery img').forEach(img => {
+            img.style.cursor = 'pointer'; // Cambia el cursor para indicar que es clickeable
             img.addEventListener('click', (e) => {
                 this.openLightbox(e.target.src, e.target.alt);
             });
         });
     }
-    
+
     openLightbox(src, alt) {
-        // Crear lightbox
+        // Crear el contenedor oscuro del lightbox
         const lightbox = document.createElement('div');
         lightbox.className = 'lightbox';
+        
+        // Estructura HTML de la imagen grande
         lightbox.innerHTML = `
-            <div class="lightbox-content">
-                <span class="lightbox-close">&times;</span>
-                <img src="${src}" alt="${alt}">
-                <div class="lightbox-caption">${alt}</div>
+            <div class="lightbox-content" style="position: relative; max-width: 90%; max-height: 90vh;">
+                <span class="lightbox-close" style="position: absolute; top: -40px; right: 0; color: white; font-size: 35px; cursor: pointer; font-weight: bold;">&times;</span>
+                <img src="${src}" alt="${alt}" style="max-width: 100%; max-height: 80vh; object-fit: contain; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                <div class="lightbox-caption" style="color: white; text-align: center; margin-top: 15px; font-family: sans-serif; font-size: 16px;">${alt}</div>
             </div>
         `;
         
+        // Estilos para que cubra toda la pantalla
         lightbox.style.cssText = `
             position: fixed;
             top: 0;
@@ -429,50 +210,49 @@ class ProjectModals {
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 2000;
-            animation: fadeIn 0.3s ease;
+            z-index: 200000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         `;
         
         document.body.appendChild(lightbox);
         
-        // Cerrar lightbox
+        // Efecto Fade-in
+        setTimeout(() => lightbox.style.opacity = '1', 10);
+        
+        // Función para cerrar suavemente
+        const closeFn = () => {
+            lightbox.style.opacity = '0';
+            setTimeout(() => {
+                if (document.body.contains(lightbox)) document.body.removeChild(lightbox);
+            }, 300);
+        };
+
+        // Eventos para cerrar (clic en la X, clic en el fondo oscuro, o tecla ESC)
         const closeBtn = lightbox.querySelector('.lightbox-close');
-        closeBtn.addEventListener('click', () => {
-            document.body.removeChild(lightbox);
-        });
+        closeBtn.addEventListener('click', closeFn);
         
         lightbox.addEventListener('click', (e) => {
-            if (e.target === lightbox) {
-                document.body.removeChild(lightbox);
-            }
+            if (e.target === lightbox) closeFn();
         });
         
-        // Cerrar con ESC
         const closeHandler = (e) => {
             if (e.key === 'Escape') {
-                document.body.removeChild(lightbox);
+                closeFn();
                 document.removeEventListener('keydown', closeHandler);
             }
         };
         document.addEventListener('keydown', closeHandler);
     }
 }
-// Sistema de Métricas y Dashboard
+
 class MetricsDashboard {
     constructor() {
-        this.init();
-    }
-    
-    init() {
         this.setupCounterAnimation();
         this.setupCharts();
-        this.setupScrollAnimations();
     }
     
-    // Animación de contadores para métricas
     setupCounterAnimation() {
-        const counters = document.querySelectorAll('.metric-number');
-        
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -481,493 +261,68 @@ class MetricsDashboard {
                 }
             });
         }, { threshold: 0.5 });
-        
-        counters.forEach(counter => observer.observe(counter));
+        document.querySelectorAll('.metric-number').forEach(c => observer.observe(c));
     }
     
     animateCounter(element) {
         const target = parseInt(element.getAttribute('data-target'));
-        const duration = 2000; // 2 segundos
-        const step = target / (duration / 16); // 60fps
+        const step = target / (2000 / 16);
         let current = 0;
-        
         const timer = setInterval(() => {
             current += step;
             if (current >= target) {
-                element.textContent = this.formatNumber(target);
+                element.textContent = target >= 1000 ? (target/1000).toFixed(1)+'k' : target;
                 clearInterval(timer);
             } else {
-                element.textContent = this.formatNumber(Math.floor(current));
+                element.textContent = Math.floor(current);
             }
         }, 16);
     }
     
-    formatNumber(num) {
-        if (num >= 1000) {
-            return (num / 1000).toFixed(1) + 'k';
-        }
-        return num.toString();
-    }
-    
-    // Configuración de gráficos
     setupCharts() {
-        this.createRadarChart();
-        this.createBarChart();
-        this.createPieChart();
-    }
-    
-    createRadarChart() {
-        const ctx = document.getElementById('skillsRadarChart').getContext('2d');
-        
-        new Chart(ctx, {
+        if(typeof Chart === 'undefined') return;
+
+        const initSafeChart = (canvasId, config) => {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+            
+            const existingChart = Chart.getChart(canvas);
+            if (existingChart) {
+                existingChart.destroy();
+            }
+            new Chart(canvas.getContext('2d'), config);
+        };
+
+        initSafeChart('skillsRadarChart', {
             type: 'radar',
             data: {
-                labels: [
-                    'Desarrollo Backend',
-                    'Bases de Datos', 
-                    'Análisis de Datos',
-                    'Programación Móvil',
-                    'Robótica & IoT',
-                    'Gestión de Proyectos'
-                ],
+                labels: ['Desarrollo Backend', 'Bases de Datos', 'Análisis de Datos', 'Prog. Móvil', 'Infraestructura'],
                 datasets: [{
-                    label: 'Nivel Actual',
-                    data: [85, 90, 75, 70, 80, 65],
-                    backgroundColor: 'rgba(0, 180, 179, 0.2)',
-                    borderColor: '#00B4B3',
-                    borderWidth: 2,
-                    pointBackgroundColor: '#00B4B3',
-                    pointBorderColor: '#fff',
-                    pointHoverBackgroundColor: '#fff',
-                    pointHoverBorderColor: '#00B4B3'
+                    label: 'Nivel Actual', data: [85, 90, 75, 80, 85],
+                    backgroundColor: 'rgba(0, 180, 179, 0.2)', borderColor: '#00B4B3', borderWidth: 2
                 }]
             },
-            options: {
-                scales: {
-                    r: {
-                        beginAtZero: true,
-                        max: 100,
-                        ticks: {
-                            stepSize: 20,
-                            backdropColor: 'transparent'
-                        },
-                        grid: {
-                            color: 'rgba(0, 180, 179, 0.1)'
-                        },
-                        angleLines: {
-                            color: 'rgba(0, 180, 179, 0.1)'
-                        },
-                        pointLabels: {
-                            font: {
-                                size: 11,
-                                family: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
-                            },
-                            color: 'var(--text-primary)'
-                        }
-                    }
-                },
-                plugins: {
-                    legend: {
-                        labels: {
-                            font: {
-                                size: 12,
-                                family: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
-                            },
-                            color: 'var(--text-primary)'
-                        }
-                    }
-                },
-                animation: {
-                    duration: 2000,
-                    easing: 'easeOutQuart'
-                }
-            }
+            options: { scales: { r: { beginAtZero: true, max: 100 } } }
         });
-    }
-    
-    createBarChart() {
-        const ctx = document.getElementById('skillsBarChart').getContext('2d');
-        
-        new Chart(ctx, {
+
+        initSafeChart('skillsBarChart', {
             type: 'bar',
             data: {
-                labels: ['Laravel', 'MySQL', 'Python', 'Arduino', 'JavaScript', 'Git'],
+                labels: ['Laravel', 'PostgreSQL', 'Flutter', 'Python', 'Ubuntu VPS'],
                 datasets: [{
-                    label: 'Nivel de Competencia (%)',
-                    data: [85, 90, 75, 80, 70, 65],
-                    backgroundColor: [
-                        'rgba(0, 180, 179, 0.8)',
-                        'rgba(255, 107, 107, 0.8)',
-                        'rgba(52, 152, 219, 0.8)',
-                        'rgba(155, 89, 182, 0.8)',
-                        'rgba(241, 196, 15, 0.8)',
-                        'rgba(46, 204, 113, 0.8)'
-                    ],
-                    borderColor: [
-                        '#00B4B3',
-                        '#FF6B6B',
-                        '#3498DB',
-                        '#9B59B6',
-                        '#F1C40F',
-                        '#2ECC71'
-                    ],
-                    borderWidth: 1,
-                    borderRadius: 5
+                    label: 'Nivel (%)', data: [85, 90, 80, 75, 85],
+                    backgroundColor: ['#00B4B3','#FF6B6B','#3498DB','#9B59B6','#F1C40F']
                 }]
             },
-            options: {
-                indexAxis: 'y',
-                scales: {
-                    x: {
-                        beginAtZero: true,
-                        max: 100,
-                        grid: {
-                            color: 'rgba(0, 180, 179, 0.1)'
-                        },
-                        ticks: {
-                            color: 'var(--text-secondary)'
-                        }
-                    },
-                    y: {
-                        grid: {
-                            color: 'rgba(0, 180, 179, 0.1)'
-                        },
-                        ticks: {
-                            color: 'var(--text-primary)',
-                            font: {
-                                size: 12
-                            }
-                        }
-                    }
-                },
-                plugins: {
-                    legend: {
-                        display: false
-                    },
-                    tooltip: {
-                        backgroundColor: 'var(--surface)',
-                        titleColor: 'var(--text-primary)',
-                        bodyColor: 'var(--text-secondary)',
-                        borderColor: 'var(--primary)',
-                        borderWidth: 1
-                    }
-                },
-                animation: {
-                    duration: 1500,
-                    easing: 'easeOutQuart'
-                }
-            }
+            options: { indexAxis: 'y', scales: { x: { beginAtZero: true, max: 100 } }, plugins: { legend: { display: false } } }
         });
-    }
-    
-    createPieChart() {
-        const ctx = document.getElementById('projectsPieChart').getContext('2d');
-        
-        new Chart(ctx, {
+
+        initSafeChart('projectsPieChart', {
             type: 'doughnut',
             data: {
-                labels: ['Aplicaciones Móviles', 'Análisis de Datos', 'Robótica', 'Web Development', 'Investigación'],
-                datasets: [{
-                    data: [30, 25, 20, 15, 10],
-                    backgroundColor: [
-                        'rgba(0, 180, 179, 0.8)',
-                        'rgba(255, 107, 107, 0.8)',
-                        'rgba(52, 152, 219, 0.8)',
-                        'rgba(155, 89, 182, 0.8)',
-                        'rgba(241, 196, 15, 0.8)'
-                    ],
-                    borderColor: 'var(--surface)',
-                    borderWidth: 3,
-                    hoverOffset: 15
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: {
-                            padding: 20,
-                            color: 'var(--text-primary)',
-                            font: {
-                                size: 11
-                            }
-                        }
-                    },
-                    tooltip: {
-                        backgroundColor: 'var(--surface)',
-                        titleColor: 'var(--text-primary)',
-                        bodyColor: 'var(--text-secondary)',
-                        borderColor: 'var(--primary)',
-                        borderWidth: 1
-                    }
-                },
-                cutout: '60%',
-                animation: {
-                    animateScale: true,
-                    animateRotate: true,
-                    duration: 2000,
-                    easing: 'easeOutQuart'
-                }
+                labels: ['App Móvil', 'Backend', 'Infraestructura', 'Análisis de Datos'],
+                datasets: [{ data: [35, 25, 25, 15], backgroundColor: ['#00B4B3','#FF6B6B','#3498DB','#9B59B6'] }]
             }
         });
     }
-    
-    setupScrollAnimations() {
-        // Animación para elementos del dashboard al hacer scroll
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, { threshold: 0.1 });
-        
-        document.querySelectorAll('.dashboard-card').forEach(card => {
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(30px)';
-            card.style.transition = 'all 0.6s ease';
-            observer.observe(card);
-        });
-    }
 }
-// Sistema de PDF con debug completo
-class PdfGenerator {
-    constructor() {
-        this.init();
-    }
-    
-    init() {
-        console.log('🔄 Inicializando PdfGenerator...');
-        this.setupPdfDownload();
-    }
-    
-    setupPdfDownload() {
-        const downloadBtn = document.getElementById('downloadPdf');
-        
-        if (downloadBtn) {
-            console.log('✅ Botón de descarga encontrado');
-            downloadBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                this.handlePdfGeneration();
-            });
-        } else {
-            console.error('❌ Botón de descarga NO encontrado');
-        }
-    }
-    
-    async handlePdfGeneration() {
-        const downloadBtn = document.getElementById('downloadPdf');
-        const originalHTML = downloadBtn.innerHTML;
-        
-        try {
-            console.log('🚀 Iniciando generación de PDF...');
-            
-            // Mostrar estado de carga
-            downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generando PDF...';
-            downloadBtn.disabled = true;
-            
-            // Verificar que html2pdf esté disponible
-            if (typeof html2pdf === 'undefined') {
-                throw new Error('html2pdf no está cargado');
-            }
-            
-            // Verificar que el contenido PDF exista
-            const pdfElement = document.getElementById('pdf-content');
-            if (!pdfElement) {
-                throw new Error('Elemento pdf-content no encontrado');
-            }
-            
-            console.log('📄 Elemento PDF encontrado:', pdfElement);
-            
-            // Mostrar temporalmente el contenido para debug
-            pdfElement.style.display = 'block';
-            
-            // Configuración optimizada
-            const opt = {
-                margin: [15, 15, 15, 15],
-                filename: `CV_Abner_Navez_Ingeniero_${new Date().getFullYear()}.pdf`,
-                image: { 
-                    type: 'jpeg', 
-                    quality: 0.98 
-                },
-                html2canvas: { 
-                    scale: 2,
-                    useCORS: true,
-                    logging: true, // Activar logging para debug
-                    scrollX: 0,
-                    scrollY: 0,
-                    windowWidth: pdfElement.scrollWidth,
-                    windowHeight: pdfElement.scrollHeight
-                },
-                jsPDF: { 
-                    unit: 'mm', 
-                    format: 'a4', 
-                    orientation: 'portrait' 
-                },
-                pagebreak: { 
-                    mode: ['avoid-all', 'css', 'legacy']
-                }
-            };
-            
-            console.log('⚙️ Configuración:', opt);
-            
-            // Generar PDF
-            await html2pdf().set(opt).from(pdfElement).save();
-            
-            console.log('✅ PDF generado exitosamente');
-            this.showToast('✅ CV PDF generado correctamente', 'success');
-            
-        } catch (error) {
-            console.error('❌ Error generando PDF:', error);
-            this.showToast(`❌ Error: ${error.message}`, 'error');
-            
-            // Fallback: descargar versión simple
-            await this.downloadFallbackPDF();
-        } finally {
-            // Ocultar contenido PDF nuevamente
-            const pdfElement = document.getElementById('pdf-content');
-            if (pdfElement) {
-                pdfElement.style.display = 'none';
-            }
-            
-            // Restaurar botón
-            setTimeout(() => {
-                downloadBtn.innerHTML = originalHTML;
-                downloadBtn.disabled = false;
-            }, 3000);
-        }
-    }
-    
-    async downloadFallbackPDF() {
-        try {
-            console.log('🔄 Intentando descarga fallback...');
-            
-            // Crear un PDF simple como fallback
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            
-            // Contenido básico del CV
-            doc.setFontSize(20);
-            doc.setTextColor(0, 180, 179);
-            doc.text('ABNER UZIEL NAVEZ FLORES', 20, 30);
-            
-            doc.setFontSize(14);
-            doc.setTextColor(100, 100, 100);
-            doc.text('Ingeniero en Ciencias de la Computación', 20, 40);
-            
-            // Información de contacto
-            doc.setFontSize(10);
-            doc.setTextColor(0, 0, 0);
-            doc.text('📧 abner.navez@alumno.buap.mx | 📱 +52 221 762 8997 | 📍 Puebla, México', 20, 50);
-            
-            // Línea separadora
-            doc.setDrawColor(0, 180, 179);
-            doc.line(20, 55, 190, 55);
-            
-            // Perfil profesional
-            doc.setFontSize(12);
-            doc.setTextColor(0, 180, 179);
-            doc.text('PERFIL PROFESIONAL', 20, 70);
-            
-            doc.setFontSize(9);
-            doc.setTextColor(0, 0, 0);
-            const profileText = 'Estudiante de Ingeniería en Ciencias de la Computación en la BUAP con especialización en desarrollo backend, análisis de datos y soluciones tecnológicas con impacto social.';
-            doc.text(profileText, 20, 80, { maxWidth: 170 });
-            
-            // Habilidades
-            doc.setFontSize(12);
-            doc.setTextColor(0, 180, 179);
-            doc.text('HABILIDADES TÉCNICAS', 20, 100);
-            
-            doc.setFontSize(9);
-            doc.setTextColor(0, 0, 0);
-            doc.text('• Desarrollo Backend: Laravel, PHP, MySQL, APIs REST', 20, 110);
-            doc.text('• Análisis de Datos: Python, Pandas, Scikit-learn', 20, 117);
-            doc.text('• Herramientas: Microsoft Office, Arduino, Git', 20, 124);
-            doc.text('• Idiomas: Español (Nativo), Inglés (Avanzado)', 20, 131);
-            
-            // Proyectos
-            doc.setFontSize(12);
-            doc.setTextColor(0, 180, 179);
-            doc.text('PROYECTOS DESTACADOS', 20, 145);
-            
-            doc.setFontSize(9);
-            doc.setTextColor(0, 0, 0);
-            doc.text('• Estudiantes SinDi - App de gestión financiera estudiantil', 20, 155);
-            doc.text('• Análisis de Riesgo Académico - Sistema predictivo', 20, 162);
-            doc.text('• Robots Competitivos - Programación de sistemas embebidos', 20, 169);
-            
-            // Guardar PDF
-            doc.save(`CV_Abner_Navez_${new Date().getFullYear()}.pdf`);
-            
-            this.showToast('✅ CV básico generado como fallback', 'success');
-            
-        } catch (fallbackError) {
-            console.error('❌ Error en fallback:', fallbackError);
-            this.showToast('❌ No se pudo generar el PDF', 'error');
-        }
-    }
-    
-    showToast(message, type) {
-        // Eliminar toasts anteriores
-        const existingToasts = document.querySelectorAll('.pdf-toast');
-        existingToasts.forEach(toast => toast.remove());
-        
-        const toast = document.createElement('div');
-        toast.className = 'pdf-toast';
-        toast.textContent = message;
-        toast.style.cssText = `
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: ${type === 'success' ? '#00B4B3' : '#FF6B6B'};
-            color: white;
-            padding: 15px 25px;
-            border-radius: 8px;
-            z-index: 10000;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-            font-weight: 600;
-            font-size: 14px;
-            animation: slideUp 0.3s ease;
-            max-width: 90%;
-            text-align: center;
-        `;
-        
-        document.body.appendChild(toast);
-        
-        setTimeout(() => {
-            if (document.body.contains(toast)) {
-                toast.style.animation = 'slideDown 0.3s ease';
-                setTimeout(() => {
-                    if (document.body.contains(toast)) {
-                        document.body.removeChild(toast);
-                    }
-                }, 300);
-            }
-        }, 4000);
-    }
-}
-
-// Inicializar cuando la página cargue
-document.addEventListener('DOMContentLoaded', () => {
-    new PdfGenerator();
-});
-
-// También inicializar cuando window esté completamente cargado
-window.addEventListener('load', () => {
-    console.log('🏁 Página completamente cargada, PDF generator listo');
-});
-
-
-
-// Inicializar cuando cargue la página
-document.addEventListener('DOMContentLoaded', () => {
-    new MetricsDashboard();
-});
-// Inicializar modals cuando cargue la página
-document.addEventListener('DOMContentLoaded', () => {
-    new ProjectModals();
-});
