@@ -11,7 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const themeToggle = document.getElementById('themeToggle');
     const themeIcon = themeToggle ? themeToggle.querySelector('i') : null;
 
-    // Animación suave del giro del ícono
     const animateIconChange = (isDark) => {
         if (!themeIcon) return;
         themeIcon.style.transform = 'rotate(-90deg) scale(0)';
@@ -23,7 +22,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 150);
     };
 
-    // Cargar preferencia guardada
     if (localStorage.getItem('theme') === 'dark') {
         document.body.setAttribute('data-theme', 'dark');
         if(themeIcon) themeIcon.className = 'fas fa-sun';
@@ -31,7 +29,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if(themeIcon) themeIcon.className = 'fas fa-moon';
     }
 
-    // Escuchar clic en el botón
     if (themeToggle && themeIcon) {
         themeToggle.addEventListener('click', () => {
             const isDark = document.body.getAttribute('data-theme') === 'dark';
@@ -48,10 +45,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // 2. NAVEGACIÓN Y ANIMACIONES FRONTEND
+    // 2. NAVEGACIÓN Y ANIMACIONES
     // ==========================================
-    
-    // Smooth scroll
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
@@ -60,7 +55,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Efecto TypeWriter (Máquina de escribir)
     const heroTitle = document.querySelector('.hero-title');
     if (heroTitle) {
         const text = heroTitle.textContent;
@@ -73,10 +67,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 setTimeout(type, 80);
             }
         }
-        setTimeout(type, 300); // Pequeño retraso al iniciar
+        setTimeout(type, 300);
     }
 
-    // Fade-in al hacer scroll
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) entry.target.classList.add('fade-in');
@@ -84,7 +77,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
     document.querySelectorAll('.skill-category, .project-card, .about-text, .contact-item').forEach(el => observer.observe(el));
 
-    // Efecto clic en la Foto de Perfil
     const profileContainer = document.querySelector('.profile-img-container');
     if (profileContainer) {
         profileContainer.addEventListener('click', function() {
@@ -103,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const t = document.createElement('div');
         t.className = 'pdf-toast';
         t.textContent = msg;
-        t.style.cssText = `position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:${type==='error'?'#FF6B6B':'#00B4B3'}; color:white; padding:12px 24px; border-radius:8px; z-index:10000; font-weight:bold; font-family:sans-serif; box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: opacity 0.5s ease; opacity: 1;`;
+        t.style.cssText = `position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:${type==='error'?'#FF6B6B':'#00B4B3'}; color:white; padding:12px 24px; border-radius:8px; z-index:100000; font-weight:bold; font-family:sans-serif; box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: opacity 0.5s ease; opacity: 1;`;
         document.body.appendChild(t);
         
         setTimeout(() => {
@@ -120,65 +112,53 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // 4. INICIALIZAR MODALES Y GRÁFICAS
+    // 4. FUNCIONES GLOBALES DE MODALES (MIGRADO DE HTML)
     // ==========================================
-    new ProjectModals();
+    window.abrirModal = function(idModal) {
+        const modal = document.getElementById(idModal);
+        if (modal) {
+            modal.style.display = 'flex'; 
+            setTimeout(() => modal.classList.add('show'), 10);
+            document.body.style.overflow = 'hidden'; // Evita que el fondo haga scroll
+        }
+    };
+
+    window.cerrarModal = function(idModal) {
+        const modal = document.getElementById(idModal);
+        if (modal) {
+            modal.style.display = 'none';
+            modal.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+    };
+
+    window.addEventListener('click', function(event) {
+        if (event.target.classList.contains('modal')) {
+            event.target.style.display = 'none';
+            event.target.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+    });
+
+    // ==========================================
+    // 5. INICIALIZAR CLASES
+    // ==========================================
+    new ProjectGallery();
     new MetricsDashboard();
 });
 
 // ==========================================
 // CLASES GLOBALES
 // ==========================================
-class ProjectModals {
+class ProjectGallery {
     constructor() {
-        this.setupSkillsModals();
-        this.setupModalEvents();
         this.setupImageGallery();
     }
-    
-    setupSkillsModals() {
-        document.querySelectorAll('.skill-category').forEach((category) => {
-            category.style.cursor = 'pointer';
-            category.style.transition = 'all 0.3s ease';
-            category.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-5px)';
-                this.style.boxShadow = '0 10px 30px rgba(0, 180, 179, 0.2)';
-            });
-            category.addEventListener('mouseleave', function() {
-                this.style.transform = 'translateY(0)';
-                this.style.boxShadow = 'var(--shadow)';
-            });
-        });
-    }
 
-    setupModalEvents() {
-        document.querySelectorAll('.modal-close').forEach(btn => {
-            btn.addEventListener('click', (e) => this.closeModal(e.target.closest('.modal')));
-        });
-        document.querySelectorAll('.modal').forEach(modal => {
-            modal.addEventListener('click', (e) => { if (e.target === modal) this.closeModal(modal); });
-        });
-        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') this.closeAllModals(); });
-    }
-    
-    closeModal(modal) {
-        if (modal) {
-            modal.style.display = 'none';
-            modal.classList.remove('active');
-            modal.classList.remove('show');
-        }
-    }
-    
-    closeAllModals() {
-        document.querySelectorAll('.modal').forEach(modal => this.closeModal(modal));
-    }
-    // ==========================================
-    // NUEVAS FUNCIONES DE GALERÍA (LIGHTBOX)
-    // ==========================================
     setupImageGallery() {
         // Busca todas las imágenes dentro de las galerías de los modales
         document.querySelectorAll('.modal-gallery img').forEach(img => {
-            img.style.cursor = 'pointer'; // Cambia el cursor para indicar que es clickeable
+            img.style.cursor = 'zoom-in';
             img.addEventListener('click', (e) => {
                 this.openLightbox(e.target.src, e.target.alt);
             });
@@ -186,55 +166,33 @@ class ProjectModals {
     }
 
     openLightbox(src, alt) {
-        // Crear el contenedor oscuro del lightbox
         const lightbox = document.createElement('div');
-        lightbox.className = 'lightbox';
+        lightbox.className = 'lightbox-overlay';
         
-        // Estructura HTML de la imagen grande
         lightbox.innerHTML = `
-            <div class="lightbox-content" style="position: relative; max-width: 90%; max-height: 90vh;">
+            <div style="position: relative; max-width: 90%; max-height: 90vh; text-align: center;">
                 <span class="lightbox-close" style="position: absolute; top: -40px; right: 0; color: white; font-size: 35px; cursor: pointer; font-weight: bold;">&times;</span>
                 <img src="${src}" alt="${alt}" style="max-width: 100%; max-height: 80vh; object-fit: contain; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
-                <div class="lightbox-caption" style="color: white; text-align: center; margin-top: 15px; font-family: sans-serif; font-size: 16px;">${alt}</div>
+                <div style="color: white; margin-top: 15px; font-family: sans-serif; font-size: 16px;">${alt}</div>
             </div>
         `;
         
-        // Estilos para que cubra toda la pantalla
         lightbox.style.cssText = `
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 200000;
-            opacity: 0;
-            transition: opacity 0.3s ease;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.9); display: flex; align-items: center; justify-content: center;
+            z-index: 200000; opacity: 0; transition: opacity 0.3s ease;
         `;
         
         document.body.appendChild(lightbox);
-        
-        // Efecto Fade-in
         setTimeout(() => lightbox.style.opacity = '1', 10);
         
-        // Función para cerrar suavemente
         const closeFn = () => {
             lightbox.style.opacity = '0';
-            setTimeout(() => {
-                if (document.body.contains(lightbox)) document.body.removeChild(lightbox);
-            }, 300);
+            setTimeout(() => { if (document.body.contains(lightbox)) document.body.removeChild(lightbox); }, 300);
         };
 
-        // Eventos para cerrar (clic en la X, clic en el fondo oscuro, o tecla ESC)
-        const closeBtn = lightbox.querySelector('.lightbox-close');
-        closeBtn.addEventListener('click', closeFn);
-        
-        lightbox.addEventListener('click', (e) => {
-            if (e.target === lightbox) closeFn();
-        });
+        lightbox.querySelector('.lightbox-close').addEventListener('click', closeFn);
+        lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeFn(); });
         
         const closeHandler = (e) => {
             if (e.key === 'Escape') {
@@ -285,43 +243,52 @@ class MetricsDashboard {
         const initSafeChart = (canvasId, config) => {
             const canvas = document.getElementById(canvasId);
             if (!canvas) return;
-            
             const existingChart = Chart.getChart(canvas);
-            if (existingChart) {
-                existingChart.destroy();
-            }
+            if (existingChart) existingChart.destroy();
             new Chart(canvas.getContext('2d'), config);
         };
 
+        // Radar: Dominio Conceptual (Escala 1 a 5)
         initSafeChart('skillsRadarChart', {
             type: 'radar',
             data: {
-                labels: ['Desarrollo Backend', 'Bases de Datos', 'Análisis de Datos', 'Prog. Móvil', 'Infraestructura'],
+                labels: ['Ciencias de la Computación', 'Backend (Laravel)', 'Hardware & Soporte', 'Data Science (AI)', 'Móvil (Flutter)', 'Admin. Servidores'],
                 datasets: [{
-                    label: 'Nivel Actual', data: [85, 90, 75, 80, 85],
+                    label: 'Nivel Conceptual (1-5)', 
+                    data: [5, 4, 5, 4, 3.5, 3.5], // Escala basada en tus respuestas
                     backgroundColor: 'rgba(0, 180, 179, 0.2)', borderColor: '#00B4B3', borderWidth: 2
                 }]
             },
-            options: { scales: { r: { beginAtZero: true, max: 100 } } }
+            options: { 
+                scales: { 
+                    r: { beginAtZero: true, max: 5, ticks: { stepSize: 1 } } 
+                } 
+            }
         });
 
+        // Barras: Años de Experiencia Reales
         initSafeChart('skillsBarChart', {
             type: 'bar',
             data: {
-                labels: ['Laravel', 'PostgreSQL', 'Flutter', 'Python', 'Ubuntu VPS'],
+                labels: ['Hardware', 'Python/ML', 'Laravel', 'Bases de Datos', 'Flutter', 'Ubuntu VPS'],
                 datasets: [{
-                    label: 'Nivel (%)', data: [85, 90, 80, 75, 85],
-                    backgroundColor: ['#00B4B3','#FF6B6B','#3498DB','#9B59B6','#F1C40F']
+                    label: 'Años de Experiencia', 
+                    data: [4, 3, 2, 1.5, 1, 1], // Tus datos reales
+                    backgroundColor: ['#00B4B3','#FF6B6B','#3498DB','#9B59B6','#F1C40F', '#E67E22']
                 }]
             },
-            options: { indexAxis: 'y', scales: { x: { beginAtZero: true, max: 100 } }, plugins: { legend: { display: false } } }
+            options: { 
+                indexAxis: 'y', 
+                scales: { x: { beginAtZero: true, max: 4.5, ticks: { stepSize: 1 } } }, 
+                plugins: { legend: { display: false } } 
+            }
         });
 
         initSafeChart('projectsPieChart', {
             type: 'doughnut',
             data: {
-                labels: ['App Móvil', 'Backend', 'Infraestructura', 'Análisis de Datos'],
-                datasets: [{ data: [35, 25, 25, 15], backgroundColor: ['#00B4B3','#FF6B6B','#3498DB','#9B59B6'] }]
+                labels: ['SaaS & Apps', 'Sistemas Backend', 'IoT & Infraestructura', 'Análisis de Datos'],
+                datasets: [{ data: [40, 30, 15, 15], backgroundColor: ['#00B4B3','#FF6B6B','#3498DB','#9B59B6'] }]
             }
         });
     }
