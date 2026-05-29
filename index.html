@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,37 +23,6 @@
             </ul>
             <button class="theme-toggle" id="themeToggle" title="Cambiar tema">
                 <i class="fas fa-moon"></i>
-            </button>
-
-            <style>
-                .theme-toggle {
-                    background: transparent;
-                    border: 2px solid var(--primary, #00B4B3);
-                    color: var(--primary, #00B4B3);
-                    border-radius: 50%;
-                    width: 42px;
-                    height: 42px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    cursor: pointer;
-                    transition: all 0.3s ease;
-                    outline: none;
-                }
-                
-                .theme-toggle:hover {
-                    background: var(--primary, #00B4B3);
-                    color: #ffffff;
-                    transform: scale(1.1);
-                    box-shadow: 0 4px 10px rgba(0, 180, 179, 0.4);
-                }
-
-                .theme-toggle i {
-                    font-size: 1.2rem;
-                    /* Transición fluida para rotar y cambiar tamaño */
-                    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease; 
-                }
-            </style>
             </button>
         </nav>
     </header>
@@ -189,70 +157,78 @@
 
     <section id="habilidades" class="skills">
         <div class="container">
-            <h2 class="section-title">Habilidades Técnicas</h2>
+            <h2 class="section-title">Habilidades Técnicas(Abrir con Click)</h2>
             <div class="skills-grid">
                 
                 <div class="skill-category" onclick="abrirModal('modal-backend')">
                     <h3><i class="fas fa-server"></i> Desarrollo Backend</h3>
                     <div class="skill-item">
-                        <span>Laravel & PHP</span>
-                        <div class="skill-bar"><div class="skill-progress" style="width: 85%"></div></div>
+                        <div class="skill-header">
+                            <span class="skill-title">Laravel & PHP</span>
+                            <span class="skill-badge">2 Años</span>
+                        </div>
+                        <p class="skill-desc">Refactorización de sistemas Legacy, separación MVC y despliegues en cPanel.</p>
                     </div>
                     <div class="skill-item">
-                        <span>PostgreSQL / MySQL</span>
-                        <div class="skill-bar"><div class="skill-progress" style="width: 90%"></div></div>
-                    </div>
-                    <div class="skill-item">
-                        <span>XAMPP</span>
-                        <div class="skill-bar"><div class="skill-progress" style="width: 80%"></div></div>
+                        <div class="skill-header">
+                            <span class="skill-title">PostgreSQL / MySQL</span>
+                            <span class="skill-badge">1.5 Años</span>
+                        </div>
+                        <p class="skill-desc">Análisis de esquemas heredados, manipulación segura en producción.</p>
                     </div>
                 </div>
 
                 <div class="skill-category" onclick="abrirModal('modal-movil')">
                     <h3><i class="fas fa-mobile-alt"></i> Desarrollo Móvil</h3>
                     <div class="skill-item">
-                        <span>Flutter / Dart</span>
-                        <div class="skill-bar"><div class="skill-progress" style="width: 85%"></div></div>
+                        <div class="skill-header">
+                            <span class="skill-title">Flutter & Dart</span>
+                            <span class="skill-badge">1 Año</span>
+                        </div>
+                        <p class="skill-desc">Apps multiplataforma, rastreo GPS nativo y tareas en tiempo real.</p>
                     </div>
                     <div class="skill-item">
-                        <span>Integración GPS</span>
-                        <div class="skill-bar"><div class="skill-progress" style="width: 80%"></div></div>
-                    </div>
-                    <div class="skill-item">
-                        <span>Gestión de Estado</span>
-                        <div class="skill-bar"><div class="skill-progress" style="width: 75%"></div></div>
+                        <div class="skill-header">
+                            <span class="skill-title">Firebase (NoSQL)</span>
+                            <span class="skill-badge">1 Año</span>
+                        </div>
+                        <p class="skill-desc">Sincronización de bases de datos en tiempo real para paneles de control.</p>
                     </div>
                 </div>
 
                 <div class="skill-category" onclick="abrirModal('modal-infraestructura')">
                     <h3><i class="fas fa-network-wired"></i> Infraestructura TI</h3>
                     <div class="skill-item">
-                        <span>Servidores Ubuntu VPS</span>
-                        <div class="skill-bar"><div class="skill-progress" style="width: 80%"></div></div>
+                        <div class="skill-header">
+                            <span class="skill-title">Mantenimiento Hardware</span>
+                            <span class="skill-badge">4 Años</span>
+                        </div>
+                        <p class="skill-desc">Diagnóstico experto, ensamblaje y mantenimiento correctivo/preventivo.</p>
                     </div>
                     <div class="skill-item">
-                        <span>Mantenimiento PC (Hardware)</span>
-                        <div class="skill-bar"><div class="skill-progress" style="width: 95%"></div></div>
-                    </div>
-                    <div class="skill-item">
-                        <span>Despliegue Web</span>
-                        <div class="skill-bar"><div class="skill-progress" style="width: 85%"></div></div>
+                        <div class="skill-header">
+                            <span class="skill-title">Ubuntu VPS / Bash</span>
+                            <span class="skill-badge">1 Año</span>
+                        </div>
+                        <p class="skill-desc">Configuración cruda de servidores Linux por consola (sin paneles).</p>
                     </div>
                 </div>
 
                 <div class="skill-category" onclick="abrirModal('modal-datos')">
-                    <h3><i class="fas fa-chart-bar"></i> Análisis de Datos</h3>
+                    <h3><i class="fas fa-chart-bar"></i> Análisis de Datos & IA</h3>
                     <div class="skill-item">
-                        <span>Python (Pandas)</span>
-                        <div class="skill-bar"><div class="skill-progress" style="width: 75%"></div></div>
+                        <div class="skill-header">
+                            <span class="skill-title">Python</span>
+                            <span class="skill-badge">3 Años</span>
+                        </div>
+                        <p class="skill-desc">Base académica sólida, algoritmos de clasificación y procesamiento.</p>
                     </div>
                     <div class="skill-item">
-                        <span>Machine Learning (Scikit)</span>
-                        <div class="skill-bar"><div class="skill-progress" style="width: 70%"></div></div>
-                    </div>
-                    <div class="skill-item">
-                        <span>Análisis Exploratorio</span>
-                        <div class="skill-bar"><div class="skill-progress" style="width: 80%"></div></div>
+                        <div class="skill-header">
+                            <span class="skill-title">Pandas & Scikit-learn</span>
+                            <span class="skill-badge">3 Años</span>
+                        </div>
+                        <p class="skill-desc">Transformación de datos y entrenamiento de modelos Machine Learning.</p>
                     </div>
                 </div>
 
@@ -313,7 +289,7 @@
                             <div class="timeline-item">
                                 <div class="timeline-date">2025</div>
                                 <div class="timeline-content">
-                                    <h4>Full Stack, Móvil & Infra</h4>
+                                    <h4>Full Stack, Móvil & Infraestructura</h4>
                                     <p>Flutter, Ubuntu VPS, Mantenimiento Hardware</p>
                                     <div class="skill-evolution">
                                         <span class="skill-tag">Flutter</span> <span class="skill-tag">Dart</span> <span class="skill-tag">VPS</span>
@@ -327,9 +303,9 @@
         </div>
     </section>
 
-   <section id="proyectos" class="projects">
+    <section id="proyectos" class="projects">
         <div class="container">
-            <h2 class="section-title">Proyectos Destacados</h2>
+            <h2 class="section-title">Proyectos Destacados(Códigos Privados por NDA)</h2>
             <div class="projects-grid">
                 
                 <div class="project-card" onclick="abrirModal('modal-rastreo')">
@@ -380,6 +356,32 @@
                     </div>
                 </div>
 
+
+                <div class="project-card" onclick="abrirModal('modal-tickets')">
+                    <div class="project-icon"><i class="fas fa-ticket-alt"></i></div>
+                    <h3>Sistema de Tickets Zero-Trust</h3>
+                    <p>Plataforma de soporte y mantenimiento con roles estrictos, prevención Double-Submit y aislamiento de núcleo en cPanel.</p>
+                    <div class="project-tech"><span>Laravel</span> <span>MariaDB</span> <span>Tailwind</span></div>
+                    <div class="project-impact"><i class="fas fa-shield-alt"></i> <span>Trazabilidad 100% segura</span></div>
+                    
+                    <div style="margin-top: 15px; text-align: right; color: var(--primary-color, #2563eb); font-weight: 600;">
+                        <span>Ver Detalles <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </div>
+
+
+                <div class="project-card" onclick="abrirModal('modal-saas-gym')">
+                    <div class="project-icon"><i class="fas fa-fingerprint"></i></div>
+                    <h3>SaaS Control de Acceso y POS</h3>
+                    <p>Plataforma integral con integración de hardware biométrico (ZKTeco), punto de venta y gestión de membresías en tiempo real.</p>
+                    <div class="project-tech"><span>Flutter</span> <span>Supabase</span> <span>Python</span></div>
+                    <div class="project-impact"><i class="fas fa-rocket"></i> <span>Escalabilidad y Alta Concurrencia</span></div>
+                    
+                    <div style="margin-top: 15px; text-align: right; color: var(--primary-color, #00B4B3); font-weight: 600;">
+                        <span>Ver Detalles <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
@@ -412,15 +414,6 @@
                     </div>
                 </div>
                 <div class="contact-actions">
-                    <style>
-                        .contact-actions { display: flex; gap: 15px; flex-wrap: wrap; }
-                        .contact-actions .btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 10px 20px; border-radius: 5px; font-weight: 600; text-decoration: none; transition: all 0.3s ease; }
-                        .contact-actions .btn-primary { background-color: var(--primary, #007bff); color: #ffffff !important; border: 2px solid var(--primary, #007bff); }
-                        .contact-actions .btn-primary:hover { background-color: var(--primary-dark, #0056b3); border-color: var(--primary-dark, #0056b3); transform: translateY(-2px); }
-                        .contact-actions .btn-secondary { background-color: transparent; color: var(--primary, #007bff) !important; border: 2px solid var(--primary, #007bff); }
-                        .contact-actions .btn-secondary:hover { background-color: var(--primary, #007bff); color: #ffffff !important; transform: translateY(-2px); }
-                    </style>
-
                     <a href="mailto:abner.navez@alumno.buap.mx" class="btn btn-primary">
                         <i class="fas fa-paper-plane"></i> Enviar Email
                     </a>
@@ -436,13 +429,11 @@
     <footer class="footer">
         <div class="container">
             <p>&copy; 2026 Abner Navez. Todos los derechos reservados.</p>
-            <p>Desarrollado con código limpio</p>
+            <p>Código limpio</p>
         </div>
     </footer>
 
-    <script src="scripts/main.js"></script>
-
-   <div id="modal-rastreo" class="modal">
+    <div id="modal-rastreo" class="modal">
         <div class="modal-content">
             <div class="modal-header">
                 <h3>App de Rastreo y Agenda Empresarial</h3>
@@ -578,7 +569,6 @@
         </div>
     </div>
 
-
     <div id="modal-backend" class="modal modal-skills">
         <div class="modal-content">
             <div class="modal-header">
@@ -590,6 +580,7 @@
                     <div class="skill-info">
                         <h4>Descripción</h4>
                         <p>Desarrollo de lógica de servidor, APIs y sistemas que procesan datos y gestionan la comunicación entre el frontend y las bases de datos.</p>
+                        <p>Lideré la refactorización de un sistema de Punto de Venta heredado para una farmacia. Analicé código complejo, identifiqué la lógica de negocio y apliqué una separación limpia de Modelo-Vista-Controlador. Además, diseñé desde cero un Sistema de Tickets de soporte, configurando el entorno y desplegándolo exitosamente en un cPanel Linux.</p>
                         
                         <div class="skill-level">
                             <h4>Nivel de Experiencia</h4>
@@ -629,12 +620,12 @@
                         </ul>
                         
                         <div class="skill-experience">
-                            <h4>Experiencia Práctica</h4>
+                            <h4>Experiencia Práctica/Logros Técnicos</h4>
                             <ul>
-                                <li>Creación de APIs RESTful.</li>
-                                <li>Gestión y optimización de bases de datos relacionales.</li>
-                                <li>Implementación de autenticación y seguridad.</li>
-                            </ul>
+                        <li>Desarrollo de APIs RESTful bajo arquitectura MVC.</li>
+                        <li>Gestión y optimización de bases de datos relacionales (MySQL/PostgreSQL).</li>
+                        <li>Configuración de entornos de producción en servidores Linux.</li>
+                         </ul>
                         </div>
                     </div>
                 </div>
@@ -653,6 +644,7 @@
                     <div class="skill-info">
                         <h4>Descripción</h4>
                         <p>Creación de aplicaciones móviles multiplataforma nativas con enfoque en la fluidez del usuario, gestión de estado e integración de hardware del dispositivo.</p>
+                        <p>El dominio de Flutter nació de una necesidad real: construir un sistema de rastreo GPS multiplataforma acoplado a un panel de tareas en tiempo real. Tomé la decisión arquitectónica de utilizar Firebase (NoSQL) para garantizar una sincronización instantánea entre la app del trabajador en Android y el panel de control web.</p>
                         
                         <div class="skill-level">
                             <h4>Nivel de Experiencia</h4>
@@ -693,9 +685,9 @@
                         <div class="skill-experience">
                             <h4>Experiencia Práctica</h4>
                             <ul>
-                                <li>Desarrollo de interfaces de usuario (UI) responsivas y animadas.</li>
-                                <li>Manejo de permisos nativos de Android/iOS (Ubicación).</li>
-                                <li>Consumo de APIs y persistencia de datos local.</li>
+                                <li>Interfaces de usuario (UI) responsivas con Flutter/Dart.</li>
+                                <li>Integración de hardware: Geolocalización GPS y consumo de APIs nativas.</li>
+                                <li>Persistencia de datos en tiempo real.</li>
                             </ul>
                         </div>
                     </div>
@@ -715,6 +707,7 @@
                     <div class="skill-info">
                         <h4>Descripción</h4>
                         <p>Administración y despliegue en servidores virtuales (VPS), junto con el conocimiento profundo de hardware para mantenimiento preventivo y correctivo de equipos.</p>
+                        <p>Para optimizar el presupuesto del cliente en la farmacia, descarté el uso de gestores visuales como cPanel y configuré un servidor Ubuntu 24 VPS totalmente crudo desde la terminal. Implementé servicios, políticas de seguridad y despliegues haciendo uso extensivo de Bash.</p>
                         
                         <div class="skill-level">
                             <h4>Nivel de Experiencia</h4>
@@ -756,9 +749,9 @@
                         <div class="skill-experience">
                             <h4>Experiencia Práctica</h4>
                             <ul>
-                                <li>Configuración de entornos LAMP/LEMP en la nube.</li>
-                                <li>Diagnóstico y reemplazo de componentes de hardware.</li>
-                                <li>Monitoreo de recursos y resolución de cuellos de botella.</li>
+                                <li>Configuración de entornos LAMP/LEMP en la nube (Zero-GUI).</li>
+                                <li>Diagnóstico y reemplazo de componentes de hardware (4 años de práctica).</li>
+                                <li>Monitoreo de recursos y resolución de cuellos de botella en servidor.</li>
                             </ul>
                         </div>
                     </div>
@@ -778,6 +771,7 @@
                     <div class="skill-info">
                         <h4>Descripción</h4>
                         <p>Análisis exploratorio de datos, identificación de patrones y desarrollo de modelos predictivos para la toma de decisiones informadas.</p>
+                        <p>Durante mi formación, utilicé Python como herramienta principal para la manipulación de datos. Coroné esta etapa desarrollando mi tesis "Plataforma Web de Análisis de Riesgo Académico", donde extraje, limpié y transformé miles de registros utilizando Pandas, para luego alimentar modelos predictivos con Scikit-learn.</p>
                         
                         <div class="skill-level">
                             <h4>Nivel de Experiencia</h4>
@@ -818,9 +812,9 @@
                         <div class="skill-experience">
                             <h4>Experiencia Práctica</h4>
                             <ul>
-                                <li>Análisis exploratorio de datos (EDA).</li>
+                                <li>Análisis Exploratorio de Datos (EDA) aplicado a entornos reales.</li>
                                 <li>Limpieza y preprocesamiento de grandes volúmenes de datos.</li>
-                                <li>Entrenamiento de modelos de clasificación.</li>
+                                <li>Entrenamiento de modelos de clasificación para toma de decisiones.</li>
                             </ul>
                         </div>
                     </div>
@@ -829,35 +823,86 @@
         </div>
     </div>
 
-    
-<script src="scripts/main.js"></script> <script>
-        // Función explícita para abrir cualquier modal por su ID
-        window.abrirModal = function(idModal) {
-            const modal = document.getElementById(idModal);
-            if (modal) {
-                // La mayoría de los modales usan flex o block para mostrarse
-                modal.style.display = 'flex'; 
-                // Añadimos un pequeño retraso para la animación de opacidad si tu CSS lo tiene
-                setTimeout(() => modal.classList.add('show'), 10);
-            }
-        };
 
-        // Función explícita para cerrar cualquier modal por su ID
-        window.cerrarModal = function(idModal) {
-            const modal = document.getElementById(idModal);
-            if (modal) {
-                modal.style.display = 'none';
-                modal.classList.remove('show');
-            }
-        };
+    <div id="modal-tickets" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Plataforma Empresarial de Soporte (Arquitectura Fail-Fast)</h3>
+                <span class="modal-close" onclick="cerrarModal('modal-tickets')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="modal-gallery">
+                    <img src="assets/images/proyectos/tickets-1.jpg" alt="Panel Mobile-First para Personal Operativo">
+                    <img src="assets/images/proyectos/tickets-2.jpg" alt="Consola Táctica Kanban para Técnicos TI">
+                    <img src="assets/images/proyectos/tickets-3.jpg" alt="Dashboard Ejecutivo de Cumplimiento">
+                </div>
+                <div class="modal-description">
+                    <h4>Descripción del Sistema</h4>
+                    <p>Desarrollo de un sistema de soporte y mantenimiento estructurado bajo metodologías <strong>Fail-Fast</strong> y <strong>Zero-Trust</strong>. Diseñado para eliminar la fricción en áreas de producción de alto rendimiento (hornos/despacho), conectando al personal operativo con la gerencia y los técnicos de TI a través de interfaces y roles estrictamente delimitados.</p>
+                    
+                    <div class="project-details">
+                        <div class="detail-item">
+                            <strong>Topología de Despliegue:</strong>
+                            <span>Aislamiento total del <em>Core</em> en servidor base. Nivel 0 (código fuente y configuración <code>.env</code>) resguardado fuera del directorio público, enlazado vía <em>symlink</em> al Nivel 1 (public_html), garantizando inmunidad ante accesos web no autorizados.</span>
+                        </div>
+                        <div class="detail-item">
+                            <strong>Ingeniería de Base de Datos:</strong>
+                            <span>Esquema estricto en MariaDB implementando <em>Check Constraints</em> para lógica de cierre (evitando transacciones huérfanas), validación <em>Double-Submit</em>, <em>SoftDeletes</em> para retención de evidencias y tabla dedicada para auditoría inmutable de estados e IPs.</span>
+                        </div>
+                        <div class="detail-item">
+                            <strong>UX Orientado a Roles:</strong>
+                            <ul style="margin-top: 5px; padding-left: 20px;">
+                                <li><strong>Operativo:</strong> Interfaz <em>Mobile-First</em> con sistema de semáforos para reportes en segundos.</li>
+                                <li><strong>Administrador:</strong> Dashboard analítico de métricas y pólizas de servicio.</li>
+                                <li><strong>Técnico TI:</strong> Consola táctica para manipulación de estados y trazabilidad de incidencias.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        // Extra: Cerrar el modal si el usuario da clic afuera de la caja blanca
-        window.addEventListener('click', function(event) {
-            if (event.target.classList.contains('modal')) {
-                event.target.style.display = 'none';
-                event.target.classList.remove('show');
-            }
-        });
-    </script>
+
+    <div id="modal-saas-gym" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>SaaS Integral: Acceso Biométrico y POS (Arquitectura Escalable)</h3>
+                <span class="modal-close" onclick="cerrarModal('modal-saas-gym')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="modal-gallery">
+                    <img src="assets/images/proyectos/gym-1.jpg" alt="Panel de Recepción y Punto de Venta">
+                    <img src="assets/images/proyectos/gym-2.jpg" alt="Dashboard Transaccional Financiero">
+                    <img src="assets/images/proyectos/gym-3.jpg" alt="Gestión de Perfiles y Membresías">
+                </div>
+                <div class="modal-description">
+                    <h4>Descripción del Sistema</h4>
+                    <p>Desarrollo de una plataforma web/móvil concebida como un SaaS (Software as a Service) para la gestión operativa y financiera de franquicias y centros deportivos. El sistema orquesta la conexión entre hardware local y bases de datos en la nube, estructurado bajo un diseño modular limpio para garantizar mantenibilidad.</p>
+                    
+                    <div class="project-details">
+                        <div class="detail-item">
+                            <strong>Integración de Hardware (IoT):</strong>
+                            <span>Desarrollo de un script nativo en <strong>Python</strong> para interactuar directamente con un lector de huellas biométrico <em>ZKTeco</em>, procesando la validación local y sincronizando la asistencia a la nube de manera asíncrona.</span>
+                        </div>
+                        <div class="detail-item">
+                            <strong>Ingeniería Concurrente y Transaccional:</strong>
+                            <span>Diseño arquitectónico enfocado en prevenir <em>Race Conditions</em> en el inventario mediante delegación de lógica al servidor (Stored Procedures / RPC). Implementación planificada de transacciones atómicas y <em>Rollbacks</em> para evitar operaciones financieras huérfanas ante cortes de red.</span>
+                        </div>
+                        <div class="detail-item">
+                            <strong>Optimización de Recursos (Data Streams):</strong>
+                            <span>Gestión avanzada de memoria en el cliente (Flutter) cruzando tuberías de datos (StreamBuilders). Hoja de ruta arquitectónica hacia Vistas Materializadas (<em>Materialized Views</em>) en PostgreSQL e indexación <em>Multi-tenant</em> para escalar el rendimiento a decenas de miles de registros sin colapsar la RAM de los dispositivos cliente.</span>
+                        </div>
+                        <div class="detail-item">
+                            <strong>Integridad de Datos:</strong>
+                            <span>Aplicación estricta de <em>Soft Deletes</em> ("Archivado") en catálogos y planes para blindar la integridad referencial de la contabilidad histórica del negocio.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="scripts/main.js"></script> 
 </body>
 </html>
