@@ -1712,3 +1712,82 @@ section {
         transform: translateX(-50%) translateY(100%);
     }
 }
+
+/* =========================================
+   ESTILOS DINÁMICOS AGREGADOS
+   ========================================= */
+
+/* Botón Modo Noche/Día */
+.theme-toggle {
+    background: transparent;
+    border: 2px solid var(--primary, #00B4B3);
+    color: var(--primary, #00B4B3);
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    outline: none;
+}
+.theme-toggle:hover {
+    background: var(--primary, #00B4B3);
+    color: #ffffff;
+    transform: scale(1.1);
+    box-shadow: 0 4px 10px rgba(0, 180, 179, 0.4);
+}
+.theme-toggle i {
+    font-size: 1.2rem;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease; 
+}
+
+/* Botones de Contacto (Email y PDF) */
+.contact-actions { 
+    display: flex; gap: 15px; flex-wrap: wrap; 
+}
+.contact-actions .btn { 
+    display: inline-flex; align-items: center; gap: 0.5rem; padding: 10px 20px; 
+    border-radius: 5px; font-weight: 600; text-decoration: none; transition: all 0.3s ease; 
+}
+.contact-actions .btn-primary { 
+    background-color: var(--primary, #00B4B3); color: #ffffff !important; border: 2px solid var(--primary, #00B4B3); 
+}
+.contact-actions .btn-primary:hover { 
+    background-color: var(--primary-dark, #009695); border-color: var(--primary-dark, #009695); transform: translateY(-2px); 
+}
+.contact-actions .btn-secondary { 
+    background-color: transparent; color: var(--primary, #00B4B3) !important; border: 2px solid var(--primary, #00B4B3); 
+}
+.contact-actions .btn-secondary:hover { 
+    background-color: var(--primary, #00B4B3); color: #ffffff !important; transform: translateY(-2px); 
+}
+
+/* =========================================
+   NUEVO DISEÑO DE HABILIDADES (SENIOR)
+   ========================================= */
+.skill-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+.skill-title {
+    font-weight: 600;
+    color: var(--text-primary, #333);
+}
+.skill-badge {
+    background: rgba(0, 180, 179, 0.1);
+    color: var(--primary, #00B4B3);
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+.skill-desc {
+    font-size: 0.85rem;
+    color: var(--text-secondary, #666);
+    margin: 0 0 15px 0;
+    line-height: 1.4;
+}
